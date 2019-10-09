@@ -65,8 +65,8 @@ void translate_triangle(triangle_t *triangle)
     // The translation coordinates are specified in triangle->tx and triangle->ty.
     // Remember to use the on-surface coordinates (triangle->sx1, etc.)
 
-    triangle->tx = 1280;
-    triangle->ty = 720;
+    triangle->tx = 783;
+    triangle->ty = 384;
 
     triangle->sx1 = triangle->tx + triangle->x1;
     triangle->sy1 = triangle->ty + triangle->y1; 
@@ -88,111 +88,87 @@ void calculate_triangle_bounding_box(triangle_t *triangle)
     // triangle->rect.x, triangle->rect.y, triangle->rect.w, triangle->rect.h
 
     if(triangle->sx1 < triangle->sx2 && triangle->sx1 < triangle->sx3) 
-    {
    
-        {
-         triangle->rect.x = triangle->sx1;
-        }
+    {
+       triangle->rect.x = triangle->sx1;
+    }
     
     if(triangle->sx2 < triangle->sx1 && triangle->sx2 < triangle->sx3)
    
-        {
-         triangle->rect.x = triangle->sx2;
-        }
+    {
+        triangle->rect.x = triangle->sx2;
+    }
     
     else
    
-       {
+    {
         triangle->rect.x = triangle->sx3;
-       }
-    
     }
     
     if(triangle->sy1 < triangle->sy2 && triangle->sy1 < triangle->sy3)
    
-       { 
+    { 
         triangle->rect.y = triangle->sy1;
-       }
+    }
     
-    if (triangle->sy2 < triangle->sy1 && triangle->sy2 < triangle->sy3)
+    if(triangle->sy2 < triangle->sy1 && triangle->sy2 < triangle->sy3)
     
-       {    
+    {    
         triangle->rect.y = triangle->sy2;
-       }
+    }
    
     else
     
-       {
+    {
         triangle->rect.y = triangle->sy3; 
-       }
-     
+    }
+    
     int lowest_x, lowest_y, highest_x, highest_y, width, hight; 
 
+   
+    //highest x
+
     if (triangle->sx1 > triangle->sx2 && triangle->sx1 > triangle->sx3)
-       
-       {
+    {
         highest_x = triangle->sx1; 
-       }
+    }
 
     if (triangle->sx2 > triangle->sx1 && triangle->sx2 > triangle->sx3)
-       
-       {
+    {
         highest_x = triangle->sx2; 
-       }
+    }
 
     else 
-     
-       {
+    {
         highest_x = triangle->sx3; 
-       }
-    
-   
-    
-    if (triangle->sy1 > triangle->sy2 && triangle->sy1 > triangle->sy3)
-     
-       {
-        highest_y = triangle->sy1;
-       }
-
-    if (triangle->sy2 > triangle->sy1 && triangle->sy2 > triangle->sy3)
-       {
-        highest_y = triangle->sy2;
-       }
-
-    else 
-       {
-        highest_y = triangle->sy3;
-       }
-    
-  
-     width = abs(highest_x - lowest_x); 
-    
-   
-     hight = abs(highest_y - lowest_y); 
-  
-     triangle->rect.h = hight; 
-    
-     triangle->rect.w = width;
-    
-  
-  
-    lowest_x = triangle->rect.x 
-   
-    lowest_y = triangle->rect.y 
-
-    
-    
-
-     
-     
-   
-     
-    
-    
+    }
     
  
+    
+    if (triangle->sy1 > triangle->sy2 && triangle->sy1 > triangle->sy3)
+    {
+        highest_y = triangle->sy1;
+    }
 
-}
+    if (triangle->sy2 > triangle->sy1 && triangle->sy2 > triangle->sy3)
+    {
+        highest_y = triangle->sy2;
+    }
+
+    else 
+    {
+        highest_y = triangle->sy3;
+    }
+    
+
+    width = abs(highest_x - triangle->rect.x); 
+
+    hight = abs(highest_y - triangle->rect.y); 
+
+    triangle->rect.w = width; 
+
+    triangle->rect.h = hight;  
+}   
 
 /*
  * Fill the triangle on the surface with the triangle's color
@@ -206,44 +182,35 @@ void fill_triangle(SDL_Surface *surface, triangle_t *triangle)
     // the triangle on the surface (via the GetPixel function), you will find those
     // edges even if the triangle overlaps with a triangle that has already
     // been drawn on the surface.
-    int y;
-    int x; 
+    int y, x;
    
-    for ( y = 0; y <= triangle->rect.h; y++)
-    {
-     int start=-1;
-     int stop=-1; 
-   
-     for(x = 0; x <= triangle->rect.w; x++)
+    for (y=0; y <= triangle->rect.h; y++)
+     {
+         int start = -1; 
+         int stop = -1;
+        for(x = 0; x <= triangle->rect.w; x++)
         {
             if (get_pixel(surface, triangle->rect.x + x, triangle->rect.y + y) == TRIANGLE_PENCOLOR)
              {
-                
              if(start==-1) 
-                
-                {
-                start = x; 
-                }
-            
+             {
+                 
+                start=x; 
+             }
              else
-               
-                {
-                stop = x; 
-                }
-            }
+             {
+                stop = x;
+             } 
+            
+        }
         }
        
         while(start <= stop)
         {
-            set_pixel(surface, triangle->rect.x + start, triangle->rect.y + y, triangle->fillcolor); 
-            {
+            set_pixel(surface, triangle->rect.x + start, triangle->rect.y + y, triangle->fillcolor);
                 start++; 
-            }
-                
         }
-       
-     } 
-        
+     }   
 }
 
 /*
