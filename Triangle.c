@@ -225,7 +225,7 @@ void fill_triangle(SDL_Surface *surface, triangle_t *triangle)
         {
             if (get_pixel(surface, triangle->rect.x +x, triangle->rect.y + y) == TRIANGLE_PENCOLOR)
              {
-             if(x==-1) 
+             if(start==-1) 
              {
                 start = x; 
              }
